@@ -2996,22 +2996,24 @@ Licensed under the MIT license.
             redrawTimeout = null;
 
             // draw highlights
-            octx.save();
-            overlay.clear();
-            octx.translate(plotOffset.left, plotOffset.top);
+            if (octx) {
+                octx.save();
+                overlay.clear();
+                octx.translate(plotOffset.left, plotOffset.top);
 
-            var i, hi;
-            for (i = 0; i < highlights.length; ++i) {
-                hi = highlights[i];
+                var i, hi;
+                for (i = 0; i < highlights.length; ++i) {
+                    hi = highlights[i];
 
-                if (hi.series.bars.show)
-                    drawBarHighlight(hi.series, hi.point);
-                else
-                    drawPointHighlight(hi.series, hi.point);
+                    if (hi.series.bars.show)
+                        drawBarHighlight(hi.series, hi.point);
+                    else
+                        drawPointHighlight(hi.series, hi.point);
+                }
+                octx.restore();
+
+                executeHooks(hooks.drawOverlay, [octx]);
             }
-            octx.restore();
-
-            executeHooks(hooks.drawOverlay, [octx]);
         }
 
         function highlight(s, point, auto) {
